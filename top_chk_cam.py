@@ -1,7 +1,9 @@
 import os
 # opencvをインポートする前にこの処理を加えると起動が早くなる
 os.environ["OPENCV_VIDEOIO_MSMF_ENABLE_HW_TRANSFORMS"] = "0"
-import cv2
+import cv2, sys
+
+cam_num = sys.argv[1]
 
 # 最後に記録されたマウスの位置
 last_mouse_position = (0, 0)
@@ -13,7 +15,11 @@ def mouse_event(event, x, y, flags, param):
         last_mouse_position = (x, y)
 
 # カメラキャプチャの開始
-cap = cv2.VideoCapture(0)
+cap = cv2.VideoCapture(int(cam_num))
+
+# カメラ解像度の設定
+cap.set(cv2.CAP_PROP_FRAME_WIDTH, 4096)
+cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 3000)
 
 cv2.namedWindow('frame')
 cv2.setMouseCallback('frame', mouse_event)
